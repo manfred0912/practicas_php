@@ -4,52 +4,61 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>p15</title>
 </head>
 <body>
-    <form action="./p15.php">
+    <form action="./p15.php" method="POST">
         <label>Primer numero</label>
         <input type="text" name="no1"><br><br>
         <label>Segundo numero</label>
         <input type="text" name="no2">
 
         <hr>
-  		<input type="radio" name="op1" value="S" checked>Suma<br>
-  		<input type="radio" name="op2" value="R">Resta<br>
-  		<input type="radio" name="op3" value="M">Multiplicación<br>
-        <input type="radio" name="op4" value="D">División<br>
+  		<input type="radio" name="op" value="S" checked>Suma<br>
+  		<input type="radio" name="op" value="R">Resta<br>
+  		<input type="radio" name="op" value="M">Multiplicación<br>
+        <input type="radio" name="op" value="D">División<br>
+        <input type="radio" name="op" value="T">Todas las anteriores<br>
 	    <hr>
+        <input type="submit" value="Procesar">
     </form>
-
     
-    <input type="submit" value="Procesar">
     <?php
-        $n1 = $_POST["no1"];
-        $n2 = $_POST["no2"];
-        if(isset($_POST["op1"])){
-            $o1 = $_POST["op1"];
-        }
-        if(isset($_POST["op2"])){
-            $o2 = $_POST["op2"];
-        }
-        if(isset($_POST["op3"])){
-           $o3 = $_POST["op3"];
-        }
-        if(isset($_POST["op4"])){
-            $o3 = $_POST["op4"];
-        }
-        
-        if(isset($o1)){
-            echo "La suma de $n1 y $n2 es: ".($n1 + $n2);
-        }
-        if(isset($o2)){
-            echo "La resta de $n1 y $n2 es: ".($n1 - $n2);
-        }
-        if(isset($o3)){
-            echo "La multiplicación de $n1 y $n2 es: ".($n1 * $n2);
-        }
-        if(isset($o4)){
-            echo "La division de $n1 y $n2 es: ".($n1 / $n2);
+        $op =$_POST["op"];
+        $no1 =$_POST["no1"];
+        $no2 =$_POST["no2"];
+          
+        switch ($op) {
+          case 'S':
+            echo "Suma: ".($no1+$no2);
+            break;
+  
+          case 'R':
+            if($no1 < $no2){
+                echo "Resta: ".($no2-$no1);
+            } else {
+                echo "Resta: ".($no1-$no2);
+            }
+            break;
+  
+          case 'M':
+            echo "Multiplicación: ".($no1*$no2);
+            break;
+  
+          case 'D':
+            echo "División: ".($no1/$no2);
+            break;
+
+          case 'T':
+            echo "Suma: ".($no1+$no2)."<br>";
+            if($no1 < $no2){
+                echo "Resta: ".($no2-$no1)."<br>";
+            } else {
+                echo "Resta: ".($no1-$no2)."<br>";
+            }
+            echo "Multiplicación: ".($no1*$no2)."<br>";
+            echo "División: ".($no1/$no2)."<br>";
+            break;
         }
     ?>
 </body>
