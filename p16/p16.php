@@ -34,7 +34,7 @@
                 case 'S':
                   echo "La suma de ";
                   echo $array[0];
-                  for($i = 0; $i < count($array); $i++){
+                  for($i = 1; $i < count($array); $i++){
                     echo "+".$array[$i];
                   }
                   echo " da como resultado: ".array_sum($array);// Función que suma los elementos de un arreglo
@@ -49,7 +49,7 @@
                   } 
                   echo "La resta de ";
                   echo $array[0];
-                  for($i = 0; $i < count($array); $i++){
+                  for($i = 1; $i < count($array); $i++){
                     echo "-".$array[$i];
                   }
                   echo " da como resultado: $r";
@@ -58,7 +58,7 @@
                 case 'M':
                     echo "La multiplicación de ";
                     echo $array[0];
-                    for($i = 0; $i < count($array); $i++){
+                    for($i = 1; $i < count($array); $i++){
                       echo "*".$array[$i];
                     }
                   echo " da como resultado: ".(array_product($array));// Función que devuelve el producto de un arreglo
