@@ -1,0 +1,214 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  margin: 10px 50px;
+}
+
+p {
+  margin: 5px;
+}
+
+img {
+  width: 100px;
+  height: 100px;
+}
+
+.header {
+  height: 150px;
+}
+
+.header h1 {
+  padding-top: 30px;
+  color: orange;
+  height: 100px;
+}
+
+.nav {
+  height: 50px;
+  background-color: rgb(75, 90, 221);
+  list-style-type: none;
+}
+
+.nav a {
+  color: white;
+  font-size: larger;
+  margin: 0;
+}
+
+.nav ul {
+  padding: 0;
+  margin-left: 10px;
+}
+
+.nav li {
+  margin-top: 10px;
+  display: inline-block;
+}
+
+.column {
+  float: left;
+}
+
+.column.left {
+  width: 25%;
+  height: auto;
+  position: relative;
+  top: 12px;
+}
+
+#top {
+  background-color: aliceblue;
+  border: 1px solid gray;
+  height: auto;
+  padding: 10px;
+}
+
+#bottom {
+  padding: 10px;
+  position: relative;
+  top: 10px;
+  background-color: rgb(255, 227, 148);
+  border: 1px dotted orange;
+  border-width: 5px;
+  height: auto;
+}
+
+#bottom h1 a {
+  color: orange;
+}
+
+#bottom h3 a {
+  color: orange;
+}
+
+.column.right {
+  padding: 10px 30px;
+  width: 74%;
+  overflow: hidden;
+  left: 1%;
+  height: auto;
+  position: relative;
+  top: 12px;
+}
+
+.column.right p {
+  position: relative;
+}
+
+.column.right img {
+  float: left;
+  margin-right: 20px;
+}
+
+.column.right h3 a {
+  color: orange;
+}
+
+.column.right h1 {
+  color: orange;
+}
+
+#right-top {
+  height: auto;
+}
+
+.first {
+  float: left;
+  width: 79%;
+}
+
+.last {
+  position: relative;
+  left: 40px;
+  float: left;
+  width: 20%;
+  height: auto;
+  border: 1px solid orange;
+  padding: 10px;
+}
+
+#style h1 {
+  color: white;
+  background-color: orange;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+  padding: 0%;
+}
+
+.footer {
+  position: relative;
+  margin-top: 20px;
+  border: 1px solid gray;
+  width: 100%;
+  height: 50px;
+  background-color: aliceblue;
+  list-style-type: none;
+  padding-top: 10px;
+}
+
+.footer ul {
+  padding: 0;
+  margin-left: 10px;
+}
+
+.footer li {
+  margin-top: 10px;
+  display: inline-block;
+}
+
+.buscar {
+  float: left;
+  width: 80%;
+}
+
+#buscar {
+  position: relative;
+  float: left;
+  padding-top: 10px;
+  color: aliceblue;
+}
+
+.copy {
+  float: left;
+  width: 80%;
+}
+
+#copy {
+  position: relative;
+  float: left;
+  left: 180px;
+}
+
+@media screen and (max-width: 1200px) {
+  .column.left, .column.right {
+    width: 100%;
+    height: auto;
+  }
+
+  .first {
+    width: 100%;
+  }
+
+  .last {
+    width: 100%;
+    left: 0;
+  }
+
+  #right-top {
+    width: 100%;
+
+  }
+
+  #right-bottom {
+    width: 100%;
+  }
+
+}

@@ -1,0 +1,48 @@
+* {
+    box-sizing: border-box;
+}
+html {
+    font-size: 62.5%;
+}
+h1 {
+    color: white;
+    font-size: 20rem;
+}
+.container {
+    display: grid;
+    grid-template-areas:
+    'uno dos dos'
+    'uno tres cuatroA'
+    'uno tres cuatroB';
+    background-color: gray;
+    grid-template-columns: 49% 24% 24%;
+    row-gap: 20px;
+    column-gap: 20px;
+    padding: 20px;
+    grid-template-rows: 200px 200px 200px;
+}
+.container div {
+    display: grid;
+    align-content: center;
+    justify-content: center;
+}
+.box1 {
+    grid-area: uno;
+    background-color: red;
+}
+.box2 {
+    grid-area: dos;
+    background-color: limegreen;
+}
+.box3 {
+    grid-area: tres;
+    background-color: pink;
+}
+.box4 {
+    grid-area: cuatroA;
+    background-color: blue;
+}
+.box4b {
+    grid-area: cuatroB;
+    background-color: blue;
+}

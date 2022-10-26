@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tablas CSS</title>
+    <style>
+      th {
+        color: white;
+        background-color: blue;
+      }
+      table {
+        border: 1px solid;
+        border-collapse: collapse;
+        overflow: hidden;
+      }
+      tr:hover {
+        background-color: yellow;
+      }
+
+      td,
+      th {
+        position: relative;;
+        padding: 10px;
+      }
+
+      tr:nth-child(even) {
+        background-color: rgba(75, 99, 104, 0.219);
+      }
+
+      td:hover::after {
+        content: "";
+        position: absolute;
+        background-color: yellow;
+        left: 0;
+        top: -5000px;
+        height: 10000px;
+        width: 100%;
+        z-index: -1;
+      }
+
+      td:hover::before {
+        background-color: yellow;
+        content: "";
+        height: 100%;
+        left: -5000px;
+        position: absolute;
+        top: 0;
+        width: 10000px;
+        z-index: -2;
+      }
+      
+    </style>
+  </head>
+  <body>
+    <main>
+      <table id="tabla2">
+        <tr>
+          <th>Title</th>
+          <th>Title</th>
+          <th>Title</th>
+          <th>Title</th>
+          <th>Title</th>
+          <th>Title</th>
+        </tr>
+        <tr>
+          <td>Data</td>
+          <td>Data</td>
+          <td>Data</td>
+          <td>Data</td>
+          <td>Data</td>
+          <td>Data</td>
+        </tr>
+        <tr>
+          <td>Data</td>
+          <td>Data</td>
+          <td>Data</td>
+          <td>Data</td>
+          <td>Data</td>
+          <td>Data</td>
+        </tr>
+        <tr>
+          <td>Data</td>
+          <td>Data</td>
+          <td>Data</td>
+          <td>Data</td>
+          <td>Data</td>
+          <td>Data</td>
+        </tr>
+        <tr>
+          <td>Data</td>
+          <td>Data</td>
+          <td>Data</td>
+          <td>Data</td>
+          <td>Data</td>
+          <td>Data</td>
+        </tr>
+        <tr>
+          <td>Data</td>
+          <td>Data</td>
+          <td>Data</td>
+          <td>Data</td>
+          <td>Data</td>
+          <td>Data</td>
+        </tr>
+        <tr>
+          <td>Data</td>
+          <td>Data</td>
+          <td>Data</td>
+          <td>Data</td>
+          <td>Data</td>
+          <td>Data</td>
+        </tr>
+      </table>
+    </main>
+    <!-- <script src="tabla.js"></script> -->
+  </body>
+</html>

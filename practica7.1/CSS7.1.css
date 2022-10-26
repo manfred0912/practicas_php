@@ -1,0 +1,50 @@
+#tabla1 table {
+    border: 1px solid;
+    border-collapse: collapse;
+    overflow: hidden;
+    align-items: center;
+}
+
+#tabla1 th {
+    background-color: rgb(29, 142, 248);
+    color: white;
+}
+
+#tabla1 td:hover {
+    background-color: pink;
+}
+
+#total th {
+    background-color: rgb(210, 244, 255);
+    color: black;
+}
+
+#tabla1 tr:nth-child(even) {
+    background-color: rgb(234, 245, 255);
+  }
+
+#tabla2 table {
+    border-top: 100px;
+    border: 1px solid;
+    border-collapse: collapse;
+    overflow: hidden;
+}
+
+#tabla2 th {
+    background-color: rgba(0, 119, 65, 0.74);
+    color: white;
+}
+
+#titulo th {
+    background-color: rgba(0, 167, 97, 0.74);
+    color: white;
+}
+
+#tabla2 td:hover {
+    content:;
+    background-color: pink;
+}
+
+#tabla2 tr:nth-child(even) {
+    background-color: rgb(239, 255, 244);
+  }
