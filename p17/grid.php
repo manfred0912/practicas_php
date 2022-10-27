@@ -1,13 +1,11 @@
 <?php
 session_start();
-if (!isset($_POST["invitado"])) {
-    $_SESSION["login"] = $_POST["username"];
-    $_SESSION["pass"] = $_POST["password"];
-}
+if($_SESSION["usuario"] != NULL || $_COOKIE["inv"] != 0){
+    header("Location:login.php");
+} else {
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -101,10 +99,11 @@ if (!isset($_POST["invitado"])) {
         <div class="header">
             <h1>Header</h1>
             <div>
-                <?php if (isset($_SESSION["login"])) { ?>
-                    <?php echo "Hola " . $_SESSION["login"] . "!"; ?>
+                <?php if (isset($_SESSION["username"])) { ?>
+                    <?php echo "Hola " . $_SESSION["username"] . "!"; ?><br>
+                    <a href="login.php?cerrar=true">Cerrar sesión</a>
                 <?php } else { ?>
-                    <p><a href="./login.php">INGRESAR</a></p>
+                    <p><a href="login.php?inv=true">INGRESAR</a></p>
                 <?php } ?>
             </div>
         </div>
@@ -130,7 +129,7 @@ if (!isset($_POST["invitado"])) {
         </div>
         <div class="footer">
             <h1>Contador de visitas al sitio</h1><br>
-            <h1><?php echo "Generales: ".$_COOKIE["counter"].", En esta sesión: ".$_SESSION["cont"]; ?></h1>
+            <h1><?php echo "Generales: ".$_COOKIE["invitado"].", En esta sesión: ".$_SESSION["counter"]; ?></h1>
         </div>
     </div>
     <?php
@@ -152,24 +151,7 @@ if (!isset($_POST["invitado"])) {
             $_SESSION["color"] = "purple";
             break;
     }
-
-    $counter = 0;
-    if(!isset($_COOKIE["counter"])){
-        $counter = 1;
-        setcookie("counter", $counter, time()+60*60*24,"/");
-    } else {
-        $counter = ++$_COOKIE["count"];
-        setcookie("counter", $counter, time()+60*60*24,"/");
-    }
-
-    $cont = 0;
-    if(isset($_POST["submit"])){
-        $cont = 1;
-        $_SESSION["cont"] = $cont;
-    } else {
-        $cont = 0;
-        $_SESSION["cont"] = $cont;
-    }
-    ?>
+    ?> 
 </body>
 </html>
+<?php } ?>
