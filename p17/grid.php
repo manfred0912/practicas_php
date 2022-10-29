@@ -1,9 +1,17 @@
 <?php
 session_start();
-if (!isset($_POST["invitado"])) {
-    $_SESSION["login"] = $_POST["username"];
-    $_SESSION["pass"] = $_POST["password"];
-}
+    if (isset($_REQUEST["submit"])) {
+        $_SESSION["login"] = $_POST["username"];
+        $_SESSION["pass"] = $_POST["password"];
+    }
+
+    $cont = 1;
+    if(isset($_SESSION["login"])){
+        $cont = $_SESSION["cont"];
+        $_SESSION["cont"] = $cont + 1;
+    } else {
+        $_SESSION["cont"] = 1;
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -48,15 +56,23 @@ if (!isset($_POST["invitado"])) {
         }
 
         .container div {
-            display: grid;
+            display: grid; 
             justify-content: center;
             align-content: center;
         }
 
         .header {
             grid-area: header;
+            display: flex;
+            flex-direction: column;
             font-size: 2rem;
             background-color: <?php echo $_SESSION["color"]?>
+        }
+        .header1{
+            width: 80%;
+        }
+        .header2{
+            width: 20%;
         }
 
         .aside {
@@ -99,23 +115,25 @@ if (!isset($_POST["invitado"])) {
 <body>
     <div class="container">
         <div class="header">
-            <h1>Header</h1>
-            <div>
+            <div class="header1">
+               <h1>Header</h1> 
+            </div>
+            <div class="header2">
                 <?php if (isset($_SESSION["login"])) { ?>
                     <?php echo "Hola " . $_SESSION["login"] . "!"; ?>
+                    <form action="./grid.php" method="POST">
+                        <input type="submit" name="cerrar" value="Cerrar sesión">
+                    </form>
                 <?php } else { ?>
                     <p><a href="./login.php">INGRESAR</a></p>
                 <?php } ?>
             </div>
         </div>
         <div class="aside">
-            <form action="./grid.php" method="POST">
+            <form action="./color.php" method="POST">
                 <label>¿De que color quieres que se muestre la pagina?</label><br>
-                <input type="radio" name="color" value="verde">Verde.<br>
-                <input type="radio" name="color" value="azul">Azul.<br>
-                <input type="radio" name="color" value="rojo">Rojo.<br>
-                <input type="radio" name="color" value="morado">Morado.<br>
-                <input type="submit" value="Procesar">
+                <input type="color" name="color">
+                <input type="submit" value="Procesar" name="col">
             </form>
         </div>
         <div class="article" id="articulo">
@@ -134,41 +152,19 @@ if (!isset($_POST["invitado"])) {
         </div>
     </div>
     <?php
-    $color = ($_POST["color"]);
-    switch ($color) {
-        case 'verde':
-            $_SESSION["color"] = "green";
-            break;
-
-        case 'azul':
-            $_SESSION["color"] = "blue";
-            break;
-
-        case 'rojo':
-            $_SESSION["color"] = "red";
-            break;
-
-        case 'morado':
-            $_SESSION["color"] = "purple";
-            break;
-    }
-
     $counter = 0;
     if(!isset($_COOKIE["counter"])){
         $counter = 1;
         setcookie("counter", $counter, time()+60*60*24,"/");
     } else {
-        $counter = ++$_COOKIE["count"];
+        echo $_COOKIE["counter"];
+        $counter = $_COOKIE["counter"] + 1 ;
         setcookie("counter", $counter, time()+60*60*24,"/");
     }
 
-    $cont = 0;
-    if(isset($_POST["submit"])){
-        $cont = 1;
-        $_SESSION["cont"] = $cont;
-    } else {
-        $cont = 0;
-        $_SESSION["cont"] = $cont;
+    if(isset($_REQUEST["cerrar"])){
+        session_unset();
+        header("Location:login.php");
     }
     ?>
 </body>
