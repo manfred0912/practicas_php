@@ -12,6 +12,7 @@ session_start();
     } else {
         $_SESSION["cont"] = 1;
     }
+    
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -63,16 +64,18 @@ session_start();
 
         .header {
             grid-area: header;
-            display: flex;
-            flex-direction: column;
+            display: grid;
+            grid-template-areas:
+                'header1 header2';
             font-size: 2rem;
+            grid-template-columns: 78% 20%;
             background-color: <?php echo $_SESSION["color"]?>
         }
         .header1{
-            width: 80%;
+            grid-area: header1;
         }
         .header2{
-            width: 20%;
+            grid-area: header2;
         }
 
         .aside {
@@ -148,7 +151,11 @@ session_start();
         </div>
         <div class="footer">
             <h1>Contador de visitas al sitio</h1><br>
-            <h1><?php echo "Generales: ".$_COOKIE["counter"].", En esta sesión: ".$_SESSION["cont"]; ?></h1>
+            <?php if(isset($_SESSION["login"])){ ?>
+                <h1><?php echo "Generales: ".$_COOKIE["counter"].", En esta sesión: ".$_SESSION["cont"]; ?> </h1>
+            <?php } else { ?>
+                <h1><?php echo "Generales: ".$_COOKIE["counter"]; ?></h1>
+            <?php } ?>
         </div>
     </div>
     <?php

@@ -2,6 +2,7 @@
     if(isset($_SESSION["login"])){
         header("Location:grid.php");
     }
+    $_SESSION["color"] = "green";
 ?>
 <!DOCTYPE html>
 <html lang="en">
