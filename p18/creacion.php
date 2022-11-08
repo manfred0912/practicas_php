@@ -55,18 +55,6 @@ if (mysqli_query($conn, $prof)) {
     echo "Error creating table: " . mysqli_error($conn);
 }
 
-$r1 = $conn->query("SELECT * FROM Log_in");
-if ($r1->num_rows == 0) {
-    $sql = "INSERT INTO Login (Codigo, Nombre, ApP, ApM, Grado)
-        VALUES ('123456789','Admin','Admin','Admin','Admin')";
-
-    if (mysqli_query($conn, $sql)) {
-        echo "New record created successfully";
-    } else {
-        echo "Error: " . $sql . "<br>" . mysqli_error($conn);
-    }
-}
-
 $mat = "CREATE TABLE IF NOT EXISTS Materias (
     NRC int(7) PRIMARY KEY NOT NULL,
     Clave VARCHAR(5) NOT NULL,
@@ -86,7 +74,7 @@ if (mysqli_query($conn, $mat)) {
 $r2 = $conn->query("SELECT * FROM Materias");
 if ($r1->num_rows == 0) {
     $sql = "INSERT INTO Login (NRC, Clave, Nombre, Horario, Dia, Profesor)
-        VALUES ('98076','I8264','Matematicas','10:00 - 11:50','L y I','Isabel')";
+        VALUES ('98076','I8264','Matematicas','10:00 - 11:50','L y I','Irma')";
 
     if (mysqli_query($conn, $sql)) {
         echo "New record created successfully"; //para eliminar el racismo debemos matar a los negros. Yo primis uwu
