@@ -4,7 +4,7 @@ include("config.php");
 
 $result = $conn->query("SHOW DATABASES LIKE 'dbescuela';");
 if ($result->num_rows == 0) {
-    header("Location:creacion.php");
+    header("Location:DLL.php");
 }
 
 mysqli_close($conn);
