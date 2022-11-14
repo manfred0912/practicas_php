@@ -3,6 +3,12 @@ include("config.php");
 mysqli_select_db($conn, "dbescuela");
 $sql = "SELECT * FROM Materias";
 $result = mysqli_query($conn, $sql);
+if(!isset($texto)){
+    $texto = " ";
+}
+if(!isset($materias)){
+    $materias = array();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -60,107 +66,157 @@ $result = mysqli_query($conn, $sql);
             <h1>Materia a registrar</h1>
             <form action="./registro.php" method=" POST">
                 <hr>
-                <input type="radio" name="op" value="1" checked>Programación web<br>
+                <input type="radio" name="op" value="1">Programación web<br>
                 <input type="radio" name="op" value="2">Arquitectura de computadoras<br>
                 <input type="radio" name="op" value="3">Seguridad en TI<br>
                 <input type="radio" name="op" value="4">POO<br>
                 <input type="radio" name="op" value="5">Bases de datos<br>
                 <input type="submit" value="Registrar">
                 <hr>
-            </form>
+            </form><br><br>
+            <h2><?php echo $texto; ?></h2><br>
+            <h2><?php echo $_SESSION["materias"]; ?></h2>
         </div>
     </div>
     <?php
-    function campo($valor) {
-        $DB_SERVER = "localhost";
-        $DB_USERNAME = "root";
-        $DB_PASSWORD = "";
-        $conn = mysqli_connect($DB_SERVER, $DB_USERNAME, $DB_PASSWORD);
+    // function campo($valor) {
+    //     $DB_SERVER = "localhost";
+    //     $DB_USERNAME = "root";
+    //     $DB_PASSWORD = "";
+    //     $conn = mysqli_connect($DB_SERVER, $DB_USERNAME, $DB_PASSWORD);
 
-        if (!$conn) {
-        die("Connection failed: " . mysqli_connect_error());
-        }
-        mysqli_select_db($conn, "dbescuela");
+    //     if (!$conn) {
+    //     die("Connection failed: " . mysqli_connect_error());
+    //     }
+    //     mysqli_select_db($conn, "dbescuela");
 
-        $usr = $_SESSION["username"];
-        $sql = "SELECT Mat1, Mat2, Mat3, Mat4, Mat5 FROM Log_in WHERE Username = '$usr';";
-        $result = mysqli_query($conn, $sql);
-        if (mysqli_num_rows($result) > 0) {
-            while ($row = mysqli_fetch_assoc($result)) {
-                if ($row["Mat1"] == NULL) {
-                    $insert = "INSERT INTO Log_in (Mat1) VALUES ('$valor') WHERE Username = '$usr';";
+    //     $usr = $_SESSION["username"];
+    //     $sql = "SELECT Mat1, Mat2, Mat3, Mat4, Mat5 FROM Log_in WHERE Username = '$usr';";
+    //     $result = mysqli_query($conn, $sql);
+    //     if (mysqli_num_rows($result) > 0) {
+    //         while ($row = mysqli_fetch_assoc($result)) {
+    //             if ($row["Mat1"] == NULL) {
+    //                 $insert = "INSERT INTO Log_in (Mat1) VALUES ('$valor') WHERE Username = '$usr';";
 
-                    if (mysqli_query($conn, $insert)) {
-                        echo "New record created successfully";
+    //                 if (mysqli_query($conn, $insert)) {
+    //                     echo "New record created successfully";
+    //                 } else {
+    //                     echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+    //                 }
+    //             } else if ($row["Mat2"] == NULL) {
+    //                 $insert = "INSERT INTO Log_in (Mat2) VALUES ('$valor') WHERE Username = '$usr'";
+
+    //                 if (mysqli_query($conn, $insert)) {
+    //                     echo "New record created successfully";
+    //                 } else {
+    //                     echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+    //                 }
+    //             } else if ($row["Mat3"] == NULL) {
+    //                 $insert = "INSERT INTO Log_in (Mat3) VALUES ('$valor') WHERE Username = '$usr'";
+
+    //                 if (mysqli_query($conn, $insert)) {
+    //                     echo "New record created successfully";
+    //                 } else {
+    //                     echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+    //                 }
+    //             } else if ($row["Mat4"] == NULL) {
+    //                 $insert = "INSERT INTO Log_in (Mat4) VALUES ('$valor') WHERE Username = '$usr'";
+
+    //                 if (mysqli_query($conn, $insert)) {
+    //                     echo "New record created successfully";
+    //                 } else {
+    //                     echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+    //                 }
+    //             } else if ($row["Mat5"] == NULL) {
+    //                 $insert = "INSERT INTO Log_in (Mat5) VALUES ('$valor') WHERE Username = '$usr'";
+
+    //                 if (mysqli_query($conn, $insert)) {
+    //                     echo "New record created successfully";
+    //                 } else {
+    //                     echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+    //                 }
+    //             } else {
+    //                 echo "Ya no puedes registrar mas materias";
+    //             }
+    //         }
+    //     }
+    // }
+    $materias = array();
+    if(isset($_POST["op"])){
+        $op = $_POST["op"];
+        switch ($op) {
+            case '1':
+                $valor = 4518022;
+                if(!in_array($valor, $materias)){
+                    if(count($materias) < 5){
+                        array_push($materias, $valor);
+                        $texto = "Registro completado!";
                     } else {
-                        echo "Error: " . $sql . "<br>" . mysqli_error($conn);
-                    }
-                } else if ($row["Mat2"] == NULL) {
-                    $insert = "INSERT INTO Log_in (Mat2) VALUES ('$valor') WHERE Username = '$usr'";
-
-                    if (mysqli_query($conn, $insert)) {
-                        echo "New record created successfully";
-                    } else {
-                        echo "Error: " . $sql . "<br>" . mysqli_error($conn);
-                    }
-                } else if ($row["Mat3"] == NULL) {
-                    $insert = "INSERT INTO Log_in (Mat3) VALUES ('$valor') WHERE Username = '$usr'";
-
-                    if (mysqli_query($conn, $insert)) {
-                        echo "New record created successfully";
-                    } else {
-                        echo "Error: " . $sql . "<br>" . mysqli_error($conn);
-                    }
-                } else if ($row["Mat4"] == NULL) {
-                    $insert = "INSERT INTO Log_in (Mat4) VALUES ('$valor') WHERE Username = '$usr'";
-
-                    if (mysqli_query($conn, $insert)) {
-                        echo "New record created successfully";
-                    } else {
-                        echo "Error: " . $sql . "<br>" . mysqli_error($conn);
-                    }
-                } else if ($row["Mat5"] == NULL) {
-                    $insert = "INSERT INTO Log_in (Mat5) VALUES ('$valor') WHERE Username = '$usr'";
-
-                    if (mysqli_query($conn, $insert)) {
-                        echo "New record created successfully";
-                    } else {
-                        echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+                        $texto = "No se pueden registrar mas materias!";
                     }
                 } else {
-                    echo "Ya no puedes registrar mas materias";
+                    $texto = "La materia ya esta registrada, prueba con otra";
                 }
-            }
+                break;
+    
+            case '2':
+                $valor = 4513844;
+                if(!in_array($valor, $materias)){
+                    if(count($materias) < 5){
+                        array_push($materias, $valor);
+                        $texto = "Registro completado!";
+                    } else {
+                        $texto = "No se pueden registrar mas materias!";
+                    }
+                } else {
+                    $texto = "La materia ya esta registrada, prueba con otra";
+                }
+                break;
+    
+            case '3':
+                $valor = 4514466;
+                if(!in_array($valor, $materias)){
+                    if(count($materias) < 5){
+                        array_push($materias, $valor);
+                        $texto = "Registro completado!";
+                    } else {
+                        $texto = "No se pueden registrar mas materias!";
+                    }
+                } else {
+                    $texto = "La materia ya esta registrada, prueba con otra";
+                }
+                break;
+    
+            case '4':
+                $valor = 4517688;
+                if(!in_array($valor, $materias)){
+                    if(count($materias) < 5){
+                        array_push($materias, $valor);
+                        $texto = "Registro completado!";
+                    } else {
+                        $texto = "No se pueden registrar mas materias!";
+                    }
+                } else {
+                    $texto = "La materia ya esta registrada, prueba con otra";
+                }
+                break;
+    
+            case '5':
+                $valor = 4519410;
+                if(!in_array($valor, $materias)){
+                    if(count($materias) < 5){
+                        array_push($materias, $valor);
+                        $texto = "Registro completado!";
+                    } else {
+                        $texto = "No se pueden registrar mas materias!";
+                    }
+                } else {
+                    $texto = "La materia ya esta registrada, prueba con otra";
+                }
+                break;
         }
     }
-
-    $op = $_POST["op"];
-    switch ($op) {
-        case '1':
-            $valor = 4518022;
-            campo($valor);
-            break;
-
-        case '2':
-            $valor = 4513844;
-            campo($valor);
-            break;
-
-        case '3':
-            $valor = 4514466;
-            campo($valor);
-            break;
-
-        case '4':
-            $valor = 4517688;
-            campo($valor);
-            break;
-
-        case '5':
-            $valor = 4519410;
-            campo($valor);
-            break;
-    }
+    $_SESSION["materias"] = $materias;
     ?>
 </body>
 
