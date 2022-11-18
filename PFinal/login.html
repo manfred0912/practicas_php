@@ -22,11 +22,31 @@
         width: 18rem;
         height: 18rem;
       }
+      .design-login {
+        background-color: blueviolet;
+        border: 1px solid;
+        width: 40%;
+        height: 40rem;
+      }
+
     </style>
   </head>
   <body>
     <header>
       <img src="./Includes/logo.jpeg" />
+      <h1>Incio de sesión</h1>
     </header>
+    <main align="center">
+      <h1>Por favor introduce tus credenciales</h1>
+      <div class="design-login">
+        <form action="./comprobacion.php">
+          <h1>Correo</h1><br>
+          <input type="text" name="correo"><br>
+          <h1>Contraseña</h1><br>
+          <input type="text" name="contraseña"><br>
+          <input type="submit" name="entrar" value="Entrar">
+        </form>
+      </div>
+    </main>
   </body>
 </html>
