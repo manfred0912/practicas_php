@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro</title>
+    <style>
+        body{
+            background: url(https://imgs.search.brave.com/XlSV0E1IsP-hiFSeyEMaDHl4ywAe0wZ2m1OX6WMZzAs/rs:fit:1200:1200:1/g:ce/aHR0cHM6Ly93d3cu/aG9zdHVkZW50cy5j/b20vcGljc19mb3Rv/c3VuaXZlcnNpZGFk/ZXMvMTIvZ2VuZXJp/Y28tMS5qcGc) no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+
+        div{
+            color: white;
+            color: white;
+            background-color: rgba(128, 128, 128, 0.205);
+        }
+
+        a{
+            color: white;
+        }
+
+    </style>
+</head>
+<body>
+    <div align="center">
+    <form action="register.php" method="post">
+        <h2>¡Bienvenido/a al registro!</h2>
+        NIP: <input type="number" name="nip" placeholder="Código de estudiante..." required><br><br>
+        Nombre(s): <input type="text" name="nombre" placeholder="Nombre(s)..." required><br><br>
+        Apellido Paterno: <input type="text" name="apP" placeholder="Apellido Paterno..." required><br><br>
+        Apellido Materno: <input type="text" name="apM" placeholder="Apellido Materno..." required><br><br>
+        Edad: <input type="number" name="edad" placeholder="Edad..." required><br><br>
+        Carrera: <input type="text" name="carrera" placeholder="Carrera..." required><br><br>
+        Contraseña: <input type="password" name="passw" placeholder="Contraseña..." required><br><br>
+        Confirme su Contraseña: <input type="password" name="cpassw" placeholder="Confirme su Contraseña..." required><br><br>
+
+        <input type="submit" name="submit" value="Registrarse">
+    </form>
+    <form action="login.php" method="post">
+        <br> ¿Ya tiene cuenta?
+        <br> <input type="submit" name="registro" value="Iniciar sesión">
+    </form>
+    </div>
+
+</body>
+</html>
