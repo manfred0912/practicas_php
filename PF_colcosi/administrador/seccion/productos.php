@@ -1,5 +1,6 @@
-<?php include("../template/cabecera.php");
-$txtID = (isset($_POST['txtID'])) ? $_POST['txtID'] : "";
+<?php 
+include("../template/cabecera.php");
+$txtID=(isset($_POST['txtID']))?$_POST['txtID']:"";
 $txtCategoria = (isset($_POST['txtCategoria'])) ? $_POST['txtCategoria'] : "";
 $numAncho = (isset($_POST['numAncho'])) ? $_POST['numAncho'] : "";
 $numAlto = (isset($_POST['numAlto'])) ? $_POST['numAlto'] : "";
@@ -8,9 +9,11 @@ $numPrecio = (isset($_POST['numPrecio'])) ? $_POST['numPrecio'] : "";
 $txtImagen = (isset($_FILES['txtImagen']['name'])) ? $_FILES['txtImagen']['name'] : "";
 $accion = (isset($_POST['action'])) ? ($_POST['action']) : "";
 
+include("../config/bd.php");
+
 switch($accion){
     case "agregar":
-        $sentenciaSQL = $conexion->prepare("INSERT INTO 'Productos'('Categoria','Ancho','Alto','Grosor','Imagen','Precio') VALUES (categoria:,ancho:,alto:,grosor:,imagen:,precio:);");
+        $sentenciaSQL = $conexion->prepare("INSERT INTO Productos (Categoria,Ancho,Alto,Grosor,Imagen,Precio) VALUES (:categoria,:ancho,:alto,:grosor,:imagen,:precio);");
         $sentenciaSQL->bindParam(':categoria',$txtCategoria);
         $sentenciaSQL->bindParam(':ancho',$numAncho);
         $sentenciaSQL->bindParam(':alto',$numAlto);
@@ -18,7 +21,6 @@ switch($accion){
         $sentenciaSQL->bindParam(':imagen',$txtImagen);
         $sentenciaSQL->bindParam(':precio',$numPrecio); 
         $sentenciaSQL->execute();
-        echo "jalas o no perro";
         break;
     
     case "modificar":
@@ -28,9 +30,25 @@ switch($accion){
     case "cancelar":
         echo "presionado boton cancelar";
         break;
+
+    case "Seleccionar":
+        echo "presionado boton seec";
+        break;
+
+    case "Borrar":
+        $sentenciaSQL = $conexion->prepare("DELETE * FROM Productos WHERE ID=:ID");
+        $sentenciaSQL->bindParam(':ID',$txtID);
+        $sentenciaSQL->execute();
+        break;
+
+    
 }
 
-include("../config/bd.php");
+$sentenciaSQL = $conexion->prepare("SELECT * FROM Productos");
+$sentenciaSQL->execute();
+$listaProductos=$sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
+
+
 
 ?>
 
@@ -41,11 +59,10 @@ include("../config/bd.php");
         </div>
         <div class="card-body">
             <form method="POST" enctype="multipart/form-data">
-                <div class="form-group">
-                    <label for="exampleInputEmail1">ID:</label>
-                    <input type="text" class="form-control" id="txtID" name="txtID" aria-describedby="emailHelp">
+            <div class = "form-group">
+                    <label for="txtID">ID:</label>
+                    <input type="text" readonly class="form-control" value="<?php echo $txtID; ?>" name="txtID" id="txtID"  placeholder="ID..." required>
                 </div>
-
                 <div class="form-group">
                     <label for="exampleInputEmail1">Categoria:</label>
                     <div class="form-check">
@@ -118,11 +135,24 @@ include("../config/bd.php");
             </tr>
         </thead>
         <tbody>
+            <?php foreach($listaProductos as $producto) { ?>
             <tr>
-                <td>2</td>
-                <td></td>
-                <td></td>
+                <td><?php echo $producto['ID']?></td>
+                <td><?php echo $producto['CategoriaD']?></td>
+                <td><?php echo $producto['Acho']?></td>
+                <td><?php echo $producto['Alto']?></td>
+                <td><?php echo $producto['Grosor']?></td>
+                <td><?php echo $producto['Imagen']?></td>
+                <td><?php echo $producto['Precio']?></td>
+                <td>
+                    <form method="POST">
+                        <input type="hidden" name="txtID" value="<?php echo $producto['ID']; ?>">
+                        <input type="submit" name="action" value="Seleccionar" class="btn btn-primary">
+                        <input type="submit" name="action" value="Borrar" class="btn btn-danger">
+                    </form>
+                </td>
             </tr>
+            <?php } ?>
         </tbody>
     </table>
 </div>
