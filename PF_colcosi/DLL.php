@@ -11,7 +11,7 @@ if (!$conn) {
 
 $dbname = "CREATE DATABASE colcosi;";
 
-if ($conn->query($dbname) === TRUE) {
+if ($conn->query($dbname) == TRUE) {
     echo "Database created successfully";
 } else {
     echo "Error creating database: " . $conn->error;
