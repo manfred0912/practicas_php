@@ -21,6 +21,7 @@ mysqli_select_db($conn,"colcosi");
 
 $sql = "CREATE TABLE IF NOT EXISTS Productos (
         ID int PRIMARY KEY NOT NULL AUTO_INCREMENT,
+        Titulo VARCHAR(30) NOT NULL,
         Categoria VARCHAR(30) NOT NULL,
         Ancho float NOT NULL,
         Alto float NOT NULL,

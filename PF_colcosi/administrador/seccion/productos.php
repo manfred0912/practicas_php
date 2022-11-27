@@ -1,6 +1,7 @@
 <?php 
 include("../template/cabecera.php");
 $txtID=(isset($_POST['txtID']))?$_POST['txtID']:"";
+$txtTitulo = (isset($_POST['txtTitulo'])) ? $_POST['txtTitulo'] : "";
 $txtCategoria = (isset($_POST['txtCategoria'])) ? $_POST['txtCategoria'] : "";
 $numAncho = (isset($_POST['numAncho'])) ? $_POST['numAncho'] : "";
 $numAlto = (isset($_POST['numAlto'])) ? $_POST['numAlto'] : "";
@@ -16,7 +17,8 @@ include("../config/bd.php");
 
 switch($accion){
     case "agregar":
-        $sentenciaSQL = $conexion->prepare("INSERT INTO Productos (Categoria,Ancho,Alto,Grosor,Imagen,Precio) VALUES (:categoria,:ancho,:alto,:grosor,:imagen,:precio);");
+        $sentenciaSQL = $conexion->prepare("INSERT INTO Productos (Titulo,Categoria,Ancho,Alto,Grosor,Imagen,Precio) VALUES (:titulo,:categoria,:ancho,:alto,:grosor,:imagen,:precio);");
+        $sentenciaSQL->bindParam(':titulo',$txtTitulo);
         $sentenciaSQL->bindParam(':categoria',$txtCategoria);
         $sentenciaSQL->bindParam(':ancho',$numAncho);
         $sentenciaSQL->bindParam(':alto',$numAlto);
@@ -34,24 +36,68 @@ switch($accion){
         $sentenciaSQL->bindParam(':imagen',$nombreArchivo);
         $sentenciaSQL->bindParam(':precio',$numPrecio); 
         $sentenciaSQL->execute();
+        header("Location:productos.php");
         break;
     
     case "modificar":
+        $sentenciaSQL = $conexion->prepare("UPDATE Productos SET Titulo=:titulo WHERE ID=:ID");
+        $sentenciaSQL->bindParam(':titulo',$txtTitulo);
+        $sentenciaSQL->bindParam(':ID',$txtID);
+        $sentenciaSQL->execute();
+
         $sentenciaSQL = $conexion->prepare("UPDATE Productos SET Categoria=:categoria WHERE ID=:ID");
         $sentenciaSQL->bindParam(':categoria',$txtCategoria);
         $sentenciaSQL->bindParam(':ID',$txtID);
         $sentenciaSQL->execute();
 
+        $sentenciaSQL = $conexion->prepare("UPDATE Productos SET Ancho=:ancho WHERE ID=:ID");
+        $sentenciaSQL->bindParam(':ancho',$numAncho);
+        $sentenciaSQL->bindParam(':ID',$txtID);
+        $sentenciaSQL->execute();
+
+        $sentenciaSQL = $conexion->prepare("UPDATE Productos SET Alto=:alto WHERE ID=:ID");
+        $sentenciaSQL->bindParam(':alto',$numAlto);
+        $sentenciaSQL->bindParam(':ID',$txtID);
+        $sentenciaSQL->execute();
+        
+        $sentenciaSQL = $conexion->prepare("UPDATE Productos SET Grosor=:grosor WHERE ID=:ID");
+        $sentenciaSQL->bindParam(':grosor',$numGrosor);
+        $sentenciaSQL->bindParam(':ID',$txtID);
+        $sentenciaSQL->execute();
+
+        $sentenciaSQL = $conexion->prepare("UPDATE Productos SET Precio=:precio WHERE ID=:ID");
+        $sentenciaSQL->bindParam(':precio',$numPrecio);
+        $sentenciaSQL->bindParam(':ID',$txtID);
+        $sentenciaSQL->execute();
+
         if($txtImagen!=""){
+            $fecha= new DateTime();
+            $nombreArchivo=($txtImagen!="")?$fecha->getTimestamp()."_".$_FILES['txtImagen']['name']:"imagen.jpg";
+
+            $tmpImagen=$_FILES['txtImagen']['tmp_name'];
+            move_uploaded_file($tmpImagen,"../../img/".$nombreArchivo);
+
+            $sentenciaSQL = $conexion->prepare("SELECT Imagen FROM Productos WHERE ID=:ID");
+            $sentenciaSQL->bindParam(':ID',$txtID);
+            $sentenciaSQL->execute();
+            $producto=$sentenciaSQL->fetch(PDO::FETCH_LAZY);
+
+            if(isset($producto["Imagen"]) &&($producto["Imagen"]!="imagen.jpg")){
+                if(file_exists("../../img/".$producto["Imagen"])){
+                unlink("../../img/".$producto["Imagen"]);
+                }
+            }
+
             $sentenciaSQL = $conexion->prepare("UPDATE Productos SET Imagen=:imagen WHERE ID=:ID");
-            $sentenciaSQL->bindParam(':imagen',$txtImagen);
+            $sentenciaSQL->bindParam(':imagen',$nombreArchivo);
             $sentenciaSQL->bindParam(':ID',$txtID);
             $sentenciaSQL->execute();
         }
+        header("Location:productos.php");
         break;
 
     case "cancelar":
-        echo "presionado boton cancelar";
+        header("Location:productos.php");
         break;
 
     case "Seleccionar":
@@ -60,6 +106,7 @@ switch($accion){
         $sentenciaSQL->execute();
         $producto=$sentenciaSQL->fetch(PDO::FETCH_LAZY);
 
+        $txtTitulo=$producto['Titulo'];
         $txtCategoria=$producto['Categoria'];
         $numAncho=$producto['Ancho'];
         $numAlto=$producto['Alto'];
@@ -69,9 +116,22 @@ switch($accion){
         break;
 
     case "Borrar":
+
+        $sentenciaSQL = $conexion->prepare("SELECT Imagen FROM Productos WHERE ID=:ID");
+        $sentenciaSQL->bindParam(':ID',$txtID);
+        $sentenciaSQL->execute();
+        $producto=$sentenciaSQL->fetch(PDO::FETCH_LAZY);
+
+        if(isset($producto["Imagen"]) &&($producto["Imagen"]!="imagen.jpg")){
+            if(file_exists("../../img/".$producto["Imagen"])){
+                unlink("../../img/".$producto["Imagen"]);
+            }
+        }
+
         $sentenciaSQL = $conexion->prepare("DELETE FROM Productos WHERE ID=:ID");
         $sentenciaSQL->bindParam(':ID',$txtID);
         $sentenciaSQL->execute();
+        header("Location:productos.php");
         break;
 
     
@@ -97,36 +157,44 @@ $listaProductos=$sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
                     <input type="text" readonly class="form-control" value="<?php echo $txtID; ?>" name="txtID" id="txtID"  placeholder="ID..." required>
                 </div>
                 <div class="form-group">
+                    <label for="exampleInputEmail1">Titulo:</label>
+                    <input type="text" class="form-control" required name="txtTitulo" id="txtTitulo" value="<?php echo $txtTitulo; ?>">
+                </div>
+                <div class="form-group">
                     <label for="exampleInputEmail1">Categoria:</label>
-                    <input type="text" class="form-control" name="txtCategoria" id="txtCategoria" value="<?php echo $txtCategoria; ?>">
+                    <input type="text" class="form-control" required name="txtCategoria" id="txtCategoria" value="<?php echo $txtCategoria; ?>">
                 </div>
                 <div class="form-group">
                     <label for="exampleInputPassword1">Ancho</label>
-                    <input type="number" class="form-control" id="numAncho" name="numAncho" step="0.01" value="<?php echo $numAncho; ?>">
+                    <input type="number" class="form-control" required id="numAncho" name="numAncho" step="0.01" value="<?php echo $numAncho; ?>">
                 </div>
                 <div class="form-group">
                     <label for="exampleInputPassword1">Alto</label>
-                    <input type="number" class="form-control" id="numAlto" name="numAlto" step="0.01" value="<?php echo $numAlto; ?>">
+                    <input type="number" class="form-control" required id="numAlto" name="numAlto" step="0.01" value="<?php echo $numAlto; ?>">
                 </div>
                 <div class="form-group">
                     <label for="exampleInputPassword1">Grosor</label>
-                    <input type="number" class="form-control" id="numGrosor" name="numGrosor" step="0.01" value="<?php echo $numGrosor; ?>">
+                    <input type="number" class="form-control" required id="numGrosor" name="numGrosor" step="0.01" value="<?php echo $numGrosor; ?>">
                 </div>
                 <div class="form-group">
                     <label for="exampleInputPassword1">Precio</label>
-                    <input type="number" class="form-control" id="numPrecio" name="numPrecio" step="0.01" value="<?php echo $numPrecio; ?>">
+                    <input type="number" class="form-control" required id="numPrecio" name="numPrecio" step="0.01" value="<?php echo $numPrecio; ?>">
                 </div>
                 <div class="form-group">
                     <label for="exampleInputPassword1">Imagen</label>
 
-                    <?php echo $txtImagen; ?>
+                    <br>
+
+                    <?php if($txtImagen!=""){ ?>
+                        <img class="img-thumbnail rounded" src="../../img/<?php echo $txtImagen?>" width="50" alt="">
+                    <?php } ?>
 
                     <input type="file" class="form-control" id="txtImagen" name="txtImagen">
                 </div>
                 <div class="btn-group" role="group" aria-label="">
-                        <button type="submit" class="btn btn-success" name="action" value="agregar">Agregar</button>
-                        <button type="submit" class="btn btn-warning" name="action" value="modificar">Modificar</button>
-                        <button type="submit" class="btn btn-info" name="action" value="cancelar">Cancelar</button>
+                        <button type="submit" class="btn btn-success" name="action" <?php echo ($accion=="Seleccionar")?"disabled":""; ?> value="agregar">Agregar</button>
+                        <button type="submit" class="btn btn-warning" name="action" <?php echo ($accion!=="Seleccionar")?"disabled":""; ?> value="modificar">Modificar</button>
+                        <button type="submit" class="btn btn-info" name="action" <?php echo ($accion!=="Seleccionar")?"disabled":""; ?> value="cancelar">Cancelar</button>
                 </div>
             </form>
         </div>
@@ -138,6 +206,7 @@ $listaProductos=$sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
         <thead>
             <tr>
                 <th>ID</th>
+                <th>Titulo</th>
                 <th>Categoria</th>
                 <th>Ancho</th>
                 <th>Alto</th>
@@ -151,11 +220,15 @@ $listaProductos=$sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
             <?php foreach($listaProductos as $producto) { ?>
             <tr>
                 <td><?php echo $producto['ID']?></td>
+                <td><?php echo $producto['Titulo']?></td>
                 <td><?php echo $producto['Categoria']?></td>
                 <td><?php echo $producto['Ancho']?></td>
                 <td><?php echo $producto['Alto']?></td>
                 <td><?php echo $producto['Grosor']?></td>
-                <td><?php echo $producto['Imagen']?></td>
+                <td>
+                    <img class="img-thumbnail rounded" src="../../img/<?php echo $producto['Imagen']?>" width="50" alt="">
+                    
+                </td>
                 <td><?php echo $producto['Precio']?></td>
                 <td>
                     <form method="POST">
