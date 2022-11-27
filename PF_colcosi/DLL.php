@@ -22,11 +22,11 @@ mysqli_select_db($conn,"colcosi");
 $sql = "CREATE TABLE IF NOT EXISTS Productos (
         ID int PRIMARY KEY NOT NULL AUTO_INCREMENT,
         Categoria VARCHAR(30) NOT NULL,
-        Ancho int NOT NULL,
-        Alto int NOT NULL,
-        Grosor int NOT NULL,
-        Imagen VARCHAR(50) NOT NULL,
-        Precio int NOT NULL
+        Ancho float NOT NULL,
+        Alto float NOT NULL,
+        Grosor float NOT NULL,
+        Imagen VARCHAR(1000),
+        Precio float NOT NULL
         )";
 
 if (mysqli_query($conn, $sql)) {
@@ -64,6 +64,7 @@ $sql = "CREATE TABLE IF NOT EXISTS Ventas (
     Correo VARCHAR(50) NOT NULL,
     Contrasenia VARCHAR(30) NOT NULL,
     Telefono int NOT NULL,
+    Total float NOT NULL,
     constraint foreign key(ID_Prod1) references Productos(ID),
     constraint foreign key(ID_Prod2) references Productos(ID),
     constraint foreign key(ID_Prod3) references Productos(ID),

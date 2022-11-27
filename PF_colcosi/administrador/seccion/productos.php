@@ -9,6 +9,9 @@ $numPrecio = (isset($_POST['numPrecio'])) ? $_POST['numPrecio'] : "";
 $txtImagen = (isset($_FILES['txtImagen']['name'])) ? $_FILES['txtImagen']['name'] : "";
 $accion = (isset($_POST['action'])) ? ($_POST['action']) : "";
 
+$txtCategoria = strtolower($txtCategoria);
+$txtCategoria = preg_replace('/\s+/', '', $txtCategoria);
+
 include("../config/bd.php");
 
 switch($accion){
@@ -18,13 +21,33 @@ switch($accion){
         $sentenciaSQL->bindParam(':ancho',$numAncho);
         $sentenciaSQL->bindParam(':alto',$numAlto);
         $sentenciaSQL->bindParam(':grosor',$numGrosor);
-        $sentenciaSQL->bindParam(':imagen',$txtImagen);
+        
+        $fecha= new DateTime();
+        $nombreArchivo=($txtImagen!="")?$fecha->getTimestamp()."_".$_FILES['txtImagen']['name']:"imagen.jpg";
+
+        $tmpImagen=$_FILES['txtImagen']['tmp_name'];
+
+        if($tmpImagen!=""){
+            move_uploaded_file($tmpImagen,"../../img/".$nombreArchivo);
+        }
+
+        $sentenciaSQL->bindParam(':imagen',$nombreArchivo);
         $sentenciaSQL->bindParam(':precio',$numPrecio); 
         $sentenciaSQL->execute();
         break;
     
     case "modificar":
-        echo "presionado boton modificar";
+        $sentenciaSQL = $conexion->prepare("UPDATE Productos SET Categoria=:categoria WHERE ID=:ID");
+        $sentenciaSQL->bindParam(':categoria',$txtCategoria);
+        $sentenciaSQL->bindParam(':ID',$txtID);
+        $sentenciaSQL->execute();
+
+        if($txtImagen!=""){
+            $sentenciaSQL = $conexion->prepare("UPDATE Productos SET Imagen=:imagen WHERE ID=:ID");
+            $sentenciaSQL->bindParam(':imagen',$txtImagen);
+            $sentenciaSQL->bindParam(':ID',$txtID);
+            $sentenciaSQL->execute();
+        }
         break;
 
     case "cancelar":
@@ -32,11 +55,21 @@ switch($accion){
         break;
 
     case "Seleccionar":
-        echo "presionado boton seec";
+        $sentenciaSQL = $conexion->prepare("SELECT * FROM Productos WHERE ID=:ID");
+        $sentenciaSQL->bindParam(':ID',$txtID);
+        $sentenciaSQL->execute();
+        $producto=$sentenciaSQL->fetch(PDO::FETCH_LAZY);
+
+        $txtCategoria=$producto['Categoria'];
+        $numAncho=$producto['Ancho'];
+        $numAlto=$producto['Alto'];
+        $numGrosor=$producto['Grosor'];
+        $txtImagen=$producto['Imagen'];
+        $numPrecio=$producto['Precio'];
         break;
 
     case "Borrar":
-        $sentenciaSQL = $conexion->prepare("DELETE * FROM Productos WHERE ID=:ID");
+        $sentenciaSQL = $conexion->prepare("DELETE FROM Productos WHERE ID=:ID");
         $sentenciaSQL->bindParam(':ID',$txtID);
         $sentenciaSQL->execute();
         break;
@@ -65,49 +98,29 @@ $listaProductos=$sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
                 </div>
                 <div class="form-group">
                     <label for="exampleInputEmail1">Categoria:</label>
-                    <div class="form-check">
-                        <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="cat" id="cat" value="gimnasia" checked>
-                        Gimnasia
-                      </label>
-                    </div>
-                    <div class="form-check">
-                        <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="cat" id="cat" value="guarderia">
-                        Guarderia
-                      </label>
-                    </div>
-                    <div class="form-check">
-                        <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="cat" id="cat" value="estimulacion">
-                        Estimulación temprana
-                      </label>
-                    </div>
-                    <div class="form-check">
-                        <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="cat" id="cat" value="otros">
-                        Otros
-                      </label>
-                    </div>
+                    <input type="text" class="form-control" name="txtCategoria" id="txtCategoria" value="<?php echo $txtCategoria; ?>">
                 </div>
                 <div class="form-group">
                     <label for="exampleInputPassword1">Ancho</label>
-                    <input type="number" class="form-control" id="numAncho" name="numAncho">
+                    <input type="number" class="form-control" id="numAncho" name="numAncho" step="0.01" value="<?php echo $numAncho; ?>">
                 </div>
                 <div class="form-group">
                     <label for="exampleInputPassword1">Alto</label>
-                    <input type="number" class="form-control" id="numAlto" name="numAlto">
+                    <input type="number" class="form-control" id="numAlto" name="numAlto" step="0.01" value="<?php echo $numAlto; ?>">
                 </div>
                 <div class="form-group">
                     <label for="exampleInputPassword1">Grosor</label>
-                    <input type="number" class="form-control" id="numGrosor" name="numGrosor">
+                    <input type="number" class="form-control" id="numGrosor" name="numGrosor" step="0.01" value="<?php echo $numGrosor; ?>">
                 </div>
                 <div class="form-group">
                     <label for="exampleInputPassword1">Precio</label>
-                    <input type="number" class="form-control" id="numPrecio" name="numPrecio">
+                    <input type="number" class="form-control" id="numPrecio" name="numPrecio" step="0.01" value="<?php echo $numPrecio; ?>">
                 </div>
                 <div class="form-group">
                     <label for="exampleInputPassword1">Imagen</label>
+
+                    <?php echo $txtImagen; ?>
+
                     <input type="file" class="form-control" id="txtImagen" name="txtImagen">
                 </div>
                 <div class="btn-group" role="group" aria-label="">
@@ -138,17 +151,17 @@ $listaProductos=$sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
             <?php foreach($listaProductos as $producto) { ?>
             <tr>
                 <td><?php echo $producto['ID']?></td>
-                <td><?php echo $producto['CategoriaD']?></td>
-                <td><?php echo $producto['Acho']?></td>
+                <td><?php echo $producto['Categoria']?></td>
+                <td><?php echo $producto['Ancho']?></td>
                 <td><?php echo $producto['Alto']?></td>
                 <td><?php echo $producto['Grosor']?></td>
                 <td><?php echo $producto['Imagen']?></td>
                 <td><?php echo $producto['Precio']?></td>
                 <td>
                     <form method="POST">
-                        <input type="hidden" name="txtID" value="<?php echo $producto['ID']; ?>">
-                        <input type="submit" name="action" value="Seleccionar" class="btn btn-primary">
-                        <input type="submit" name="action" value="Borrar" class="btn btn-danger">
+                        <input type="hidden" name="txtID" value="<?php echo $producto['ID']; ?>" />
+                        <input type="submit" name="action" value="Seleccionar" class="btn btn-primary" />
+                        <input type="submit" name="action" value="Borrar" class="btn btn-danger" />
                     </form>
                 </td>
             </tr>
