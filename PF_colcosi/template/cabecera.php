@@ -24,8 +24,13 @@
                 <a class="nav-link" href="#">Galeria</a>
             </li>
         </ul>
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item"><a class="navbar-brand" href="index.php"><img src="./template/carrito.png" style="width: 50px; height: 50px;"></a></li>
+        <ul class="navbar-nav mx-auto">
+            <li class="nav-item"><a class="navbar-brand" href="carrito.php"><img src="./template/carrito.png" style="width: 50px; height: 50px;"></a></li>
+            <?php if(isset($_SESSION['correo'])){ ?>
+                <li class="nav-item"><a class="navbar-brand" href="cuenta.php"><img src="./template/user.png" style="width: 50px; height: 50px;"> <br> Cuenta</a></li>
+            <?php } else { ?>
+                <li class="nav-item"><a class="navbar-brand" href="login.php"><img src="./template/user.png" style="width: 50px; height: 50px;"> <br> Iniciar sesión</a></li>
+            <?php } ?>
         </ul>
         
         

@@ -1,5 +1,16 @@
-<?php include("template/cabecera.php"); 
+<?php  session_start();
+include("template/cabecera.php"); 
 include("administrador/config/bd.php");
+
+$sentenciaSQL = $conexion->prepare("SELECT * FROM Clientes WHERE Correo=:correo");
+$sentenciaSQL->bindParam(':correo',$_SESSION['correo']);
+$sentenciaSQL->execute();
+$producto=$sentenciaSQL->fetch(PDO::FETCH_LAZY);
+
+if(isset($producto["ID"])){
+    $_SESSION['ID'] = $producto["ID"];
+}
+
 
 $sentenciaSQL = $conexion->prepare("SELECT * FROM Productos");
 $sentenciaSQL->execute();

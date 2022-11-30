@@ -38,12 +38,8 @@ if (mysqli_query($conn, $sql)) {
 
 $sql = "CREATE TABLE IF NOT EXISTS Clientes (
     ID int PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    Nombre VARCHAR(30) NOT NULL,
-    ApP VARCHAR(30) NOT NULL,
-    ApM VARCHAR(30) NOT NULL,
-    Correo VARCHAR(50) NOT NULL,
-    Contrasenia VARCHAR(30) NOT NULL,
-    Telefono int NOT NULL
+    Correo VARCHAR(500) NOT NULL,
+    Contrasenia VARCHAR(60) NOT NULL
     )";
 
 if (mysqli_query($conn, $sql)) {

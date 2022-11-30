@@ -11,7 +11,7 @@ $txtImagen = (isset($_FILES['txtImagen']['name'])) ? $_FILES['txtImagen']['name'
 $accion = (isset($_POST['action'])) ? ($_POST['action']) : "";
 
 $txtCategoria = strtolower($txtCategoria);
-$txtCategoria = preg_replace('/\s+/', '', $txtCategoria);
+$txtCategoria = preg_replace('/\s+/', '', $txtCategoria); 
 
 include("../config/bd.php");
 
