@@ -1,6 +1,7 @@
 <?php session_start();
 include("./administrador/config/bd.php");
 
+$cale = strlen($_POST['ID']);
 $id = implode(array_keys($_POST));
 
 $sentenciaSQL = $conexion->prepare("SELECT * FROM Carrito WHERE ID_sesion=:id_sesion;");

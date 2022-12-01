@@ -1,9 +1,6 @@
 <?php session_start();
 include("./administrador/config/bd.php");
 include("./template/cabecera.php");
-include("./administrador/config/bd.php");
-
-
 
 $sentenciaSQL = $conexion->prepare("SELECT * FROM Productos INNER JOIN Carrito ON Productos.ID = Carrito.ID_Producto WHERE ID_sesion=:id_sesion");
 $sentenciaSQL->bindParam(':id_sesion',$_SESSION['ID']);

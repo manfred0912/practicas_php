@@ -49,25 +49,14 @@ if (mysqli_query($conn, $sql)) {
 }
 
 $sql = "CREATE TABLE IF NOT EXISTS Ventas (
-    ID int PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    ID_Prod1 int NOT NULL,
-    ID_Prod2 int NOT NULL,
-    ID_Prod3 int NOT NULL,
-    ID_Prod4 int NOT NULL,
-    ID_Prod5 int NOT NULL,
-    ID_Prod6 int NOT NULL,
-    ID_Clientes int NOT NULL,
-    ApM VARCHAR(30) NOT NULL,
-    Correo VARCHAR(50) NOT NULL,
-    Contrasenia VARCHAR(30) NOT NULL,
-    Telefono int NOT NULL,
+    ID_Cliente VARCHAR(255) NOT NULL,
+    ID_Producto bigint UNSIGNED UNIQUE NOT NULL,
+    Cantidad int NOT NULL,
     Total float NOT NULL,
-    constraint foreign key(ID_Prod1) references Productos(ID),
-    constraint foreign key(ID_Prod2) references Productos(ID),
-    constraint foreign key(ID_Prod3) references Productos(ID),
-    constraint foreign key(ID_Prod4) references Productos(ID),
-    constraint foreign key(ID_Prod5) references Productos(ID),
-    constraint foreign key(ID_Prod6) references Productos(ID)
+    constraint foreign key(ID_Cliente) references Clientes(ID)
+    constraint foreign key(ID_Producto) references Productos(ID)
+    ON UPDATE CASCADE ON DELETE CASCADE
+
     )";
 
 if (mysqli_query($conn, $sql)) {
