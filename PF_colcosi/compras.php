@@ -7,8 +7,9 @@ $sentenciaSQL->bindParam(':id_Cliente',$_SESSION['ID']);
 $sentenciaSQL->execute();
 $listaCarrito=$sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
 ?>
+<div class="col-md-2"></div>
 
-<div class="col-md-7">
+<div class="col-md-8">
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -37,3 +38,7 @@ $listaCarrito=$sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
         </tbody>
     </table>
 </div>
+
+<div class="col-md-2"></div>
+
+<?php include("./template/pie.php"); ?>

@@ -4,7 +4,13 @@ include("./administrador/config/bd.php");
 $cant=$_POST["cantidad"];
 
 $try = implode(array_keys($_POST));
-$id = substr($try, 0, 1);
+if(strlen($try) <= 9){
+    $id = substr($try, 0, 1);
+} else {
+    $id = substr($try, 0, 2);
+}
+
+// intento #1 de poner cookies (no jalo :c)
 
 // if(!isset($_COOKIE[$_SESSION["ID"]])){
 //     $valores = [
@@ -45,7 +51,6 @@ $query=$sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
 if($query!=NULL){
     foreach($query as $carrito){
         if($carrito['ID_Producto'] == $id){
-            echo "cale";
             $sentenciaSQL = $conexion->prepare("UPDATE Carrito SET Cantidad=:cantidad WHERE ID_Producto=:id_producto");
             $sentenciaSQL->bindParam(':id_producto',$id);
             $sentenciaSQL->bindParam(':cantidad',$cant);
@@ -60,7 +65,6 @@ if($query!=NULL){
         }
     }
 } else {
-    echo "cale 2";
     $sentenciaSQL = $conexion->prepare("INSERT INTO Carrito (ID_sesion, ID_Producto, Cantidad) VALUES (:id_sesion,:id_producto,:cantidad)");
     $sentenciaSQL->bindParam(':id_sesion',$_SESSION['ID']);
     $sentenciaSQL->bindParam(':id_producto',$id);
@@ -69,6 +73,6 @@ if($query!=NULL){
     var_dump($query);
 }
 
-header("Location:index.php");
+header("Location:carrito.php");
 ?>
 
