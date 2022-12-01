@@ -1,25 +1,74 @@
 <?php session_start();
 include("./administrador/config/bd.php");
-include("./administrador/config/bd.php");
 
-$usr_id = $_SESSION["ID"];
+$cant=$_POST["cantidad"];
 
-if($_POST){
-    $id = implode(array_keys($_POST));
-}
+$try = implode(array_keys($_POST));
+$id = substr($try, 0, 1);
 
-if(!isset($_COOKIE[$usr_id[$id]])){
-    $valores = [
-        $id => 1
-    ];
-    setcookie( $usr_id[$id], $valores, time() + 60 * 60 * 24 * 7, "/");
-} else {
-    foreach($_COOKIE[$usr_id] as $key => $value){
-        if($key == $id){
-            $_COOKIE[$usr_id[$id]] = $_COOKIE[$usr_id[$id]] + 1;
+// if(!isset($_COOKIE[$_SESSION["ID"]])){
+//     $valores = [
+//         $id => 1
+//     ];
+//     setcookie( $_SESSION["ID"], json_encode($valores), time() + 60 * 60 * 24 * 7, "/");
+//     echo "jalas o no 1";
+// } else {
+//     echo "o hasta aqui?";
+//     $valores = json_decode($_COOKIE[$_SESSION["ID"]], true);
+//     if(is_array($valores)){
+//         foreach($valores as $key => $value){
+//             if($key == $id){
+//                 $value += 1;
+//                 echo "aqui?";
+//             } else {
+//                 $valores += [$id => 1];
+//                 echo "o aqui?";
+//             }
+//             setcookie($_SESSION["ID"], json_encode($valores), time() + 60 * 60 * 24 * 7, "/");
+//         }
+//         echo "jalas o no 2";
+//     }
+// }
+
+// var_dump($_COOKIE);
+// if(json_encode($_COOKIE['ID'])!=NULL){
+//     echo json_encode($_COOKIE[$_SESSION['ID']]);
+// } else {
+//     echo "ptm no jala";
+// }
+
+$sentenciaSQL = $conexion->prepare("SELECT * FROM Carrito WHERE ID_sesion=:id_sesion;");
+$sentenciaSQL->bindParam(':id_sesion',$_SESSION['ID']);
+$sentenciaSQL->execute();
+$query=$sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
+
+if($query!=NULL){
+    foreach($query as $carrito){
+        if($carrito['ID_Producto'] == $id){
+            echo "cale";
+            $sentenciaSQL = $conexion->prepare("UPDATE Carrito SET Cantidad=:cantidad WHERE ID_Producto=:id_producto");
+            $sentenciaSQL->bindParam(':id_producto',$id);
+            $sentenciaSQL->bindParam(':cantidad',$cant);
+            $sentenciaSQL->execute();
+
+        } else {
+            $sentenciaSQL = $conexion->prepare("INSERT INTO Carrito (ID_sesion, ID_Producto, Cantidad) VALUES (:id_sesion,:id_producto,:cantidad)");
+            $sentenciaSQL->bindParam(':id_sesion',$_SESSION['ID']);
+            $sentenciaSQL->bindParam(':id_producto',$id);
+            $sentenciaSQL->bindParam(':cantidad',$cant);
+            $sentenciaSQL->execute();
         }
     }
+} else {
+    echo "cale 2";
+    $sentenciaSQL = $conexion->prepare("INSERT INTO Carrito (ID_sesion, ID_Producto, Cantidad) VALUES (:id_sesion,:id_producto,:cantidad)");
+    $sentenciaSQL->bindParam(':id_sesion',$_SESSION['ID']);
+    $sentenciaSQL->bindParam(':id_producto',$id);
+    $sentenciaSQL->bindParam(':cantidad',$cant);
+    $sentenciaSQL->execute();
+    var_dump($query);
 }
 
-var_dump($_COOKIE[$usr_id]);
+header("Location:index.php");
 ?>
+

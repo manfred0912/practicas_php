@@ -13,16 +13,6 @@ if (!$conn) {
 }
 
 if ($_POST) {
-    if (($_POST['usuario'] == "admin") && ($_POST['contrasenia'] == "admin")) {
-        $_SESSION['usuario'] = "ok";
-        $_SESSION['nombreUsuario'] = "admin";
-        header('Location:inicio.php');
-    } else {
-        $mensaje = "Error: El usuario o contraseña son incorrectos";
-    }
-}
-
-if ($_POST) {
     $correo = $_POST['correo'];
     $passw = $_POST['contrasenia'];
 

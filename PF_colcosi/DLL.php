@@ -76,32 +76,17 @@ if (mysqli_query($conn, $sql)) {
     echo "Error creating table: " . mysqli_error($conn);
 }
 
-$sql = "CREATE TABLE IF NOT EXISTS Direcciones(
-    ID int PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    ID_Cliente int NOT NULL,
-    Direccion VARCHAR(50) NOT NULL,
-    CP int NOT NULL,
-    Ciudad VARCHAR(50) NOT NULL,
-    constraint foreign key(ID_Cliente) references Clientes(ID)
+$sql = "CREATE TABLE IF NOT EXISTS Carrito(
+    ID_sesion VARCHAR(255) NOT NULL,
+    ID_Producto bigint UNSIGNED UNIQUE NOT NULL,
+    Cantidad int NOT NULL,
+    constraint foreign key(ID_Producto) references Productos(ID)
+    ON UPDATE CASCADE ON DELETE CASCADE
     )";
 
 if (mysqli_query($conn, $sql)) {
-echo "Table Direcciones created successfully";
+echo "Table Carrito created successfully";
 } else {
 echo "Error creating table: " . mysqli_error($conn);
 }
 
-$sql = "CREATE TABLE IF NOT EXISTS Tarjetas(
-    ID int PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    ID_Cliente int NOT NULL,
-    Num VARCHAR(20) NOT NULL,
-    CP int NOT NULL,
-    Ciudad VARCHAR(50) NOT NULL,
-    constraint foreign key(ID_Cliente) references Clientes(ID)
-    )";
-
-if (mysqli_query($conn, $sql)) {
-echo "Table Tarjetas created successfully";
-} else {
-echo "Error creating table: " . mysqli_error($conn);
-}

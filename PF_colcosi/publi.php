@@ -26,6 +26,7 @@ $sentenciaSQL = $conexion->prepare("SELECT * FROM Productos WHERE ID=:ID");
             <?php if(isset($_SESSION['ID'])) { ?>
             <form action="proceso_carrito.php" method="POST">
                 <input type="hidden" name="<?php echo $id; ?>" id="">
+                <p>Cantidad: </p><input type="number" name="cantidad">
                 <input type="submit" class="btn btn-primary" value="Agregar al carrito"></input>
             </form>
             <?php } else { ?>
