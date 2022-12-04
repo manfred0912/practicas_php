@@ -39,7 +39,7 @@
     <link rel="stylesheet" href="./css/bootstrap.min.css" />
 </head>
 <body>
-    <nav class="<?php echo $_COOKIE['color']; ?>">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <ul class="navbar-nav mr-auto">
         <li class="nav-item">
                 <a class="navbar-brand" href="index.php"><img src="./template/logo.png" alt="Logo" style="width:100px; margin: 10px; ;"></a>
@@ -51,6 +51,9 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="cotizaciones.php">Cotizaciones</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="cotizaciones.php">Guayna se la come</a>
             </li>
         </ul>
         <!-- <ul class="navbar-nav ml-auto" style="margin-right: 50px; display: inline-block;">
