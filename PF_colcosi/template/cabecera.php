@@ -52,9 +52,6 @@
             <li class="nav-item">
                 <a class="nav-link" href="cotizaciones.php">Cotizaciones</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="cotizaciones.php">Guayna se la come</a>
-            </li>
         </ul>
         <!-- <ul class="navbar-nav ml-auto" style="margin-right: 50px; display: inline-block;">
             <form method="POST" action="">
